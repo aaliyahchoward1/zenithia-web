@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gallery at Zenith Nadir — Odd Orbit Beauty</title>
+<meta name="description" content="The permanent collection of Odd Orbit Beauty, exhibited at Zenith Nadir. Four shades, four houses of the realm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0614; --deep:#170b2e; --panel:#1d1038;
+    --ink:#e9e2f5; --muted:#a99bc7;
+    --gold:#d9a441; --gold-bright:#f2c66d; --hair:rgba(217,164,65,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    color:var(--ink);font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;min-height:100vh;
+    background:
+      radial-gradient(1000px 480px at 50% -8%, #2a1650 0%, rgba(42,22,80,0) 60%),
+      radial-gradient(800px 500px at 90% 110%, #22103f 0%, rgba(34,16,63,0) 55%),
+      var(--void);
+    padding:30px 16px 130px;
+  }
+  header{text-align:center;max-width:860px;margin:0 auto 8px}
+  .overline{font-family:Cinzel,serif;letter-spacing:.42em;font-size:11px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;text-indent:.42em}
+  h1{font-family:Cinzel,serif;font-weight:700;font-size:clamp(30px,5.6vw,52px);letter-spacing:.1em;color:var(--ink);line-height:1.12;text-shadow:0 0 34px rgba(242,198,109,.22)}
+  .sub{font-size:clamp(17px,2.6vw,21px);font-style:italic;color:var(--muted);margin-top:10px}
+  .rule{display:flex;align-items:center;gap:12px;max-width:420px;margin:16px auto 0;color:var(--gold)}
+  .rule::before,.rule::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--hair),transparent)}
+  .rule span{font-size:13px}
+
+  .hall{
+    max-width:1120px;margin:26px auto 0;display:grid;gap:22px;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  }
+  .case{
+    border:1px solid var(--hair);border-radius:14px;overflow:hidden;cursor:pointer;text-align:left;
+    background:linear-gradient(180deg,#120826,#0b0614);color:var(--ink);font-family:inherit;padding:0;
+    box-shadow:0 22px 50px rgba(0,0,0,.5);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    position:relative;
+  }
+  .case:hover,.case:focus-visible{transform:translateY(-5px);border-color:var(--gold-bright);box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 40px rgba(217,164,65,.18)}
+  .case:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
+  .vitrine{
+    position:relative;aspect-ratio:3/4;background:#000;display:grid;place-items:center;overflow:hidden;
+    background:radial-gradient(ellipse 90% 55% at 50% 0%, rgba(242,198,109,.16), transparent 60%), #000;
+  }
+  .vitrine img{width:100%;height:100%;object-fit:contain;display:block}
+  .vitrine::before{ /* glass sheen */
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:linear-gradient(115deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.03) 28%, transparent 45%);
+  }
+  .vitrine::after{ /* plinth shadow */
+    content:"";position:absolute;left:12%;right:12%;bottom:5%;height:16px;border-radius:50%;
+    background:radial-gradient(ellipse at center, rgba(217,164,65,.35), transparent 70%);z-index:1;
+  }
+  .tag{
+    position:absolute;top:10px;left:10px;z-index:3;font-family:Cinzel,serif;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:#1c0f02;background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    padding:5px 9px;border-radius:999px;border:1px solid #8a6414;
+  }
+  .placard{padding:14px 16px 18px;border-top:1px solid var(--hair);background:linear-gradient(180deg, rgba(217,164,65,.08), rgba(217,164,65,.02))}
+  .placard .no{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+  .placard h2{font-family:Cinzel,serif;font-size:21px;letter-spacing:.05em;margin:4px 0 3px}
+  .placard .house{font-style:italic;color:var(--muted);font-size:16px}
+  .placard .line{font-size:17px;line-height:1.35;color:#d9cfef;margin-top:7px}
+
+  .note{max-width:1120px;margin:22px auto 0;text-align:center;color:var(--muted);font-style:italic;font-size:16.5px}
+
+  /* Exhibit detail */
+  .panel{
+    position:fixed;z-index:40;background:linear-gradient(180deg,var(--panel),#150a29);
+    border:1px solid var(--hair);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.6);
+    transition:transform .38s cubic-bezier(.22,.9,.28,1), opacity .3s ease;
+  }
+  @media (min-width:861px){
+    .panel{top:50%;right:28px;width:400px;max-height:90vh;overflow:auto;border-radius:16px;transform:translate(calc(100% + 60px),-50%);opacity:0;pointer-events:none}
+    .panel.open{transform:translate(0,-50%);opacity:1;pointer-events:auto}
+  }
+  @media (max-width:860px){
+    .panel{left:10px;right:10px;bottom:10px;max-height:78vh;overflow:auto;border-radius:16px;transform:translateY(calc(100% + 30px));opacity:0;pointer-events:none}
+    .panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+  }
+  .panel figure{background:#000;display:grid;place-items:center}
+  .panel figure img{display:block;max-width:100%;max-height:46vh;object-fit:contain}
+  .panel .body{padding:16px 22px 24px}
+  .panel .no{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+  .panel h2{font-family:Cinzel,serif;font-size:26px;letter-spacing:.05em;margin:4px 0 2px}
+  .panel .house{font-style:italic;color:var(--muted);font-size:16.5px}
+  .panel .story{font-size:18.5px;line-height:1.45;color:#d9cfef;margin-top:10px}
+  .panel .medium{margin-top:14px;border-top:1px solid var(--hair);padding-top:12px;font-size:16.5px;line-height:1.45;color:var(--muted)}
+  .panel .medium b{color:var(--ink);font-weight:600}
+  .cta{
+    display:inline-block;margin-top:18px;font-family:Cinzel,serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+    color:#1c0f02;background:linear-gradient(180deg,var(--gold-bright),var(--gold));padding:11px 18px;border-radius:999px;
+    text-decoration:none;border:1px solid #8a6414;box-shadow:0 6px 20px rgba(217,164,65,.35);
+  }
+  .cta:hover{filter:brightness(1.07)}
+  .close{position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--hair);background:rgba(11,6,20,.75);color:var(--gold-bright);font-size:17px;cursor:pointer;line-height:1}
+
+  /* Docent Lunuff */
+  .lunuff{position:fixed;right:16px;bottom:86px;z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .bubble{
+    max-width:230px;background:#f6f1ff;color:#2a1650;border:2px solid var(--gold);border-radius:16px;
+    padding:9px 13px;font-size:16.5px;line-height:1.3;font-weight:600;position:relative;
+    box-shadow:0 10px 26px rgba(0,0,0,.45);transition:opacity .25s ease;
+  }
+  .bubble::after{content:"";position:absolute;right:34px;bottom:-9px;width:14px;height:14px;background:#f6f1ff;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
+  .lunuff button{
+    width:86px;height:86px;border-radius:50%;border:3px solid var(--gold);padding:0;overflow:hidden;cursor:pointer;background:#fff;
+    box-shadow:0 12px 30px rgba(0,0,0,.5), 0 0 24px rgba(242,198,109,.35);animation:bob 3.4s ease-in-out infinite;
+  }
+  .lunuff button img{width:100%;height:100%;object-fit:cover;display:block}
+  .lunuff button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
+  .lunuff.hop button{animation:hop .45s ease}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-16px) scale(1.05)}100%{transform:translateY(0)}}
+  .lunuff .name{font-family:Cinzel,serif;font-size:10px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-right:8px}
+
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(11,6,20,0),rgba(11,6,20,.92) 30%);
+  }
+  .bar a{
+    font-family:Cinzel,serif;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
+    color:var(--gold-bright);border:1px solid var(--hair);border-radius:999px;padding:10px 18px;background:rgba(23,11,46,.85);
+  }
+  .bar a:hover{background:rgba(217,164,65,.18)}
+  .bar .fine{width:100%;text-align:center;font-style:italic;color:var(--muted);font-size:14.5px;margin-top:2px}
+
+  @media (prefers-reduced-motion: reduce){
+    .lunuff button,.case{animation:none;transition:none}
+    .panel{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="overline">Odd Orbit Beauty — the collection</div>
+  <h1>THE GALLERY AT ZENITH NADIR</h1>
+  <p class="sub">Four pieces. Four houses of the realm. Wander the cases — if one calls you, it can be acquired.</p>
+  <div class="rule"><span>✦</span></div>
+</header>
+
+<main>
+  <div class="hall" id="hall"><!-- exhibit cases are injected by script --></div>
+  <p class="note">Every piece handmade, vegan, and poured in small batches. The docent (bottom right) accepts compliments in lieu of tips.</p>
+</main>
+
+<aside class="panel" id="panel" aria-hidden="true" aria-label="Exhibit details">
+  <button class="close" id="closeBtn" aria-label="Close exhibit panel">✕</button>
+  <figure><img id="pImg" src="" alt=""></figure>
+  <div class="body">
+    <div class="no" id="pNo"></div>
+    <h2 id="pName"></h2>
+    <div class="house" id="pHouse"></div>
+    <p class="story" id="pStory"></p>
+    <p class="medium" id="pMedium"></p>
+    <a class="cta" href="https://www.etsy.com/shop/OddOrbitBeauty" target="_blank" rel="noopener">Acquire this piece — Etsy</a>
+  </div>
+</aside>
+
+<div class="lunuff" id="lunuff">
+  <div class="bubble" id="bubble">welcome to the gallery ✦ no touching the glass — i say this lovingly.</div>
+  <button id="lunuffBtn" aria-label="Ask Lunuff, the gallery docent, for a note">
+    <img src="assets/lunuff.png" alt="Lunuff, a periwinkle alien bunny puppy with a gold crescent moon on its forehead">
+  </button>
+  <div class="name">Lunuff · Docent</div>
+</div>
+
+<nav class="bar">
+  <a href="https://www.etsy.com/shop/OddOrbitBeauty" target="_blank" rel="noopener">Shop — Etsy</a>
+  <a href="https://www.instagram.com/oddorbitbeauty" target="_blank" rel="noopener">Instagram — @oddorbitbeauty</a>
+  <div class="fine">Odd Orbit Beauty — jewelry by day, gloss by night.</div>
+</nav>
+
+<script>
+var EXHIBITS = [
+  { id:"black-siren", no:"Exhibit Nº I", name:"Black Siren", house:"House of Zenith Nadir",
+    img:"assets/black-siren.jpg",
+    alt:"Black Siren Renaissance Lipgloss Necklace: near-black gloss in a silver-tone filigree cage pendant with a winged centerpiece",
+    line:"The first shade poured in the library dark.",
+    story:"Near-black and warm at once — the piece the whole realm started with. It hangs in the tower's own case, under library light.",
+    medium:"<b>Medium:</b> near-black gloss, warm vanilla, in an acrylic vial. Silver-tone filigree cage, crown cap, stainless steel chain. Handmade, vegan.",
+    lunuff:"the og. black siren was poured first — everything else is her orbit." },
+  { id:"aquariosa", no:"Exhibit Nº II", name:"Aquariosa", house:"House of the Moonlit Lake",
+    img:"assets/aquariosa.jpg",
+    alt:"Aquariosa Renaissance Lipgloss Necklace: iridescent blue gloss in a silver-tone filigree cage pendant",
+    line:"For whoever the water calls.",
+    story:"Blue the way deep water is blue — it changes with the light and never apologizes. Exhibited, naturally, facing the lake.",
+    medium:"<b>Medium:</b> iridescent blue gloss, tropical vanilla, in an acrylic vial. Silver-tone filigree cage, crown cap, stainless steel chain. Handmade, vegan.",
+    lunuff:"she hums near water. or maybe that's me. either way — pretty." },
+  { id:"nebula", no:"Exhibit Nº III", name:"Nebula", house:"House of the Sky Market", tag:"This season: Nebula's Gaze",
+    img:"assets/nebula.jpg",
+    alt:"Nebula Renaissance Lipgloss Necklace: deep purple gloss in a gold-tone filigree cage pendant",
+    line:"Bottled dusk, straight from blue hour.",
+    story:"Deep purple with a whole weather system in it. For the Halloween season the gallery exhibits her under her seasonal name — Nebula's Gaze.",
+    medium:"<b>Medium:</b> deep purple gloss in an acrylic vial. Gold-tone filigree cage, crown cap, and chain. Handmade, vegan.",
+    lunuff:"nebula is showing as nebula's gaze this season. seasonal fame suits her." },
+  { id:"blood-moon", no:"Exhibit Nº IV", name:"Blood Moon", house:"House of the Hollowlands", tag:"Newest acquisition",
+    img:"assets/blood-moon.jpg",
+    alt:"Blood Moon Renaissance Lipgloss Necklace held in hand: raspberry pink-red gloss in a gold-tone filigree cage pendant",
+    line:"The newest piece in the collection.",
+    story:"Raspberry red, warm as the Hollowlands stone after sunset. The gallery's newest acquisition — she hasn't stopped glowing about it.",
+    medium:"<b>Medium:</b> raspberry pink-red gloss in an acrylic vial. Gold-tone filigree cage, crown cap, and chain. Handmade, vegan.",
+    lunuff:"blood moon is the new piece. be nice — she's new. she's also everyone's favorite already." }
+];
+var TIPS = [
+  "no touching the glass. looking with your whole heart is free.",
+  "every piece here is handmade. by one human. one.",
+  "the gallery is inside a library. libraries contain multitudes.",
+  "if a shade calls your name, that's the acquisition department.",
+  "i do the tours at dusk. attendance: also me.",
+  "psst — the realm outside has a map. i'm on the dock there. boat-sized now."
+];
+
+var hall = document.getElementById("hall");
+var panel = document.getElementById("panel");
+var bubble = document.getElementById("bubble");
+var lunuffBox = document.getElementById("lunuff");
+var tipIndex = 0;
+
+function say(text){
+  bubble.style.opacity = 0;
+  setTimeout(function(){ bubble.textContent = text; bubble.style.opacity = 1; }, 180);
+}
+function hop(){
+  lunuffBox.classList.remove("hop");
+  void lunuffBox.offsetWidth;
+  lunuffBox.classList.add("hop");
+}
+
+EXHIBITS.forEach(function(x){
+  var b = document.createElement("button");
+  b.className = "case";
+  b.setAttribute("aria-label", "View exhibit: " + x.name);
+  b.innerHTML =
+    '<span class="vitrine">' +
+      (x.tag ? '<span class="tag">' + x.tag + '</span>' : '') +
+      '<img src="' + x.img + '" alt="' + x.alt + '">' +
+    '</span>' +
+    '<span class="placard" style="display:block">' +
+      '<span class="no">' + x.no + '</span>' +
+      '<h2>' + x.name + '</h2>' +
+      '<span class="house">' + x.house + '</span>' +
+      '<span class="line" style="display:block">' + x.line + '</span>' +
+    '</span>';
+  b.addEventListener("click", function(){ openExhibit(x); });
+  hall.appendChild(b);
+});
+
+function openExhibit(x){
+  document.getElementById("pImg").src = x.img;
+  document.getElementById("pImg").alt = x.alt;
+  document.getElementById("pNo").textContent = x.no + (x.tag ? " — " + x.tag : "");
+  document.getElementById("pName").textContent = x.name;
+  document.getElementById("pHouse").textContent = x.house;
+  document.getElementById("pStory").textContent = x.story;
+  document.getElementById("pMedium").innerHTML = x.medium;
+  panel.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  say(x.lunuff); hop();
+}
+function closePanel(){
+  panel.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+}
+document.getElementById("closeBtn").addEventListener("click", closePanel);
+document.addEventListener("keydown", function(e){ if (e.key === "Escape") closePanel(); });
+document.getElementById("lunuffBtn").addEventListener("click", function(){
+  say(TIPS[tipIndex % TIPS.length]); tipIndex++; hop();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENITHIA — a field guide to the realm</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0618;
+    background-image: radial-gradient(ellipse at 50% 30%, #1d0f38 0%, #0d0618 70%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #f0e6d2;
+    padding: 24px;
+  }
+  h1.masthead {
+    font-size: 15px;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: #d4af69;
+    margin-bottom: 18px;
+    font-weight: normal;
+  }
+  .masthead small {
+    display: block;
+    text-align: center;
+    letter-spacing: 4px;
+    font-size: 10px;
+    color: #8f7ba8;
+    margin-top: 6px;
+  }
+  #book { margin: 0 auto; }
+  .zine-page {
+    width: 420px;
+    height: 560px;
+    background: #140a24;
+    overflow: hidden;
+    position: relative;
+  }
+  .zine-page img.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .zine-page .shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,3,18,0.92) 0%, rgba(8,3,18,0.45) 38%, rgba(8,3,18,0) 60%);
+  }
+  .zine-page .copy {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 28px 30px 30px;
+  }
+  .zine-page .kicker {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #d4af69;
+    margin-bottom: 10px;
+  }
+  .zine-page h2 {
+    font-size: 30px;
+    font-weight: normal;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: #f5ecd8;
+  }
+  .zine-page p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #cfc2dd;
+  }
+  .zine-page p .gold { color: #d4af69; }
+  .cover-title {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding-top: 64px;
+    text-align: center;
+  }
+  .cover-title h2 {
+    font-size: 52px;
+    letter-spacing: 14px;
+    text-indent: 14px;
+    color: #f5ecd8;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.8);
+    margin-bottom: 12px;
+  }
+  .cover-title .sub {
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #d4af69;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  }
+  .back-links { margin-top: 14px; }
+  .back-links a {
+    color: #d4af69;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .nav {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .nav button {
+    background: transparent;
+    border: 1px solid #d4af69;
+    color: #d4af69;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .nav button:hover { background: rgba(212,175,105,0.12); }
+  .nav .pageno { font-size: 12px; color: #8f7ba8; letter-spacing: 2px; min-width: 60px; text-align: center; }
+  .hint { margin-top: 14px; font-size: 11px; letter-spacing: 2px; color: #5d4c76; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<h1 class="masthead">Odd Orbit Beauty<small>a field guide</small></h1>
+
+<div id="book">
+  <!-- PAGE 1 : COVER -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p1-cover.jpg" alt="Zenithia establishing shot">
+    <div class="shade"></div>
+    <div class="cover-title">
+      <h2>ZENITHIA</h2>
+      <div class="sub">a field guide to the realm</div>
+    </div>
+    <div class="copy">
+      <p>Every shade has an origin. This is the map.<br><span class="gold">Flip to enter →</span></p>
+    </div>
+  </div>
+
+  <!-- PAGE 2 : THE REALM -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p2-realm.jpg" alt="Central District at golden hour">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">i · the realm</div>
+      <h2>The Realm</h2>
+      <p>Zenithia is folded between the hour you stay up too late and the dream you almost remember. Baroque towers, night markets, gardens that hang in the air — a world built for the ones who were always <span class="gold">too much</span>.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 3 : ZENITH NADIR -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p3-nadir.jpg" alt="The Zenith Nadir">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">ii · the center</div>
+      <h2>Zenith Nadir</h2>
+      <p>At the heart of the realm stands the Zenith Nadir — the sacred origin site of the shades. Every gloss begins here, where the light learns its color.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 4 : BLACK SIREN -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p4-blacksiren.jpg" alt="Black Siren">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">iii · the shades</div>
+      <h2>Black Siren</h2>
+      <p><span class="gold">Warm vanilla.</span> Silver filigree cage, near-black gloss. For the ones who stopped whispering.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 5 : AQUARIOSA -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p5-aquariosa.jpg" alt="Aquariosa">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">iii · the shades</div>
+      <h2>Aquariosa</h2>
+      <p><span class="gold">Tropical vanilla.</span> Silver filigree cage, vivid blue gloss. Jewelry by day, gloss by night.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 6 : NEBULA -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p6-nebula.jpg" alt="Nebula">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">iii · the shades</div>
+      <h2>Nebula</h2>
+      <p><span class="gold">Gold cage, purple gloss.</span> Answers to <span class="gold">"Nebula's Gaze"</span> every October. Let the old version haunt somebody else.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 7 : BLOOD MOON -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p7-bloodmoon.jpg" alt="Blood Moon">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">iii · the shades</div>
+      <h2>Blood Moon</h2>
+      <p><span class="gold">Raspberry-red gloss</span> in a gold filigree cage. Handmade, vegan — like all of them.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 8 : BACK COVER -->
+  <div class="zine-page">
+    <img class="bg" src="pages/p8-back.jpg" alt="Whisk and Glow bakery">
+    <div class="shade"></div>
+    <div class="copy">
+      <div class="kicker">iv · enter</div>
+      <h2>Enter Zenithia</h2>
+      <p>Renaissance Lipgloss Necklaces — acrylic vials, silver-tone accents, stainless steel chains. Handmade &amp; vegan, always.</p>
+      <div class="back-links">
+        <a href="https://www.etsy.com/shop/OddOrbitBeauty">✦ etsy.com/shop/OddOrbitBeauty</a><br>
+        <a href="https://www.instagram.com/oddorbitbeauty">✦ @oddorbitbeauty</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <button id="prev">← Prev</button>
+  <span class="pageno" id="pageno">1 / 8</span>
+  <button id="next">Next →</button>
+</div>
+<div class="hint">click a page corner or drag to flip</div>
+
+<script src="lib/page-flip.browser.js"></script>
+<script>
+  var book = document.getElementById('book');
+  var pageFlip = new St.PageFlip(book, {
+    width: 420,
+    height: 560,
+    size: 'fixed',
+    minWidth: 300,
+    maxWidth: 480,
+    minHeight: 400,
+    maxHeight: 640,
+    drawShadow: true,
+    flippingTime: 900,
+    usePortrait: true,
+    startZIndex: 0,
+    autoSize: true,
+    maxShadowOpacity: 0.6,
+    showCover: true,
+    mobileScrollSupport: true,
+    swipeDistance: 30,
+    clickEventForward: true,
+    useMouseEvents: true,
+    showPageCorners: true,
+    disableFlipByClick: false
+  });
+  pageFlip.loadFromHTML(document.querySelectorAll('.zine-page'));
+
+  var pageno = document.getElementById('pageno');
+  function updateNo() {
+    pageno.textContent = (pageFlip.getCurrentPageIndex() + 1) + ' / ' + pageFlip.getPageCount();
+  }
+  pageFlip.on('flip', updateNo);
+  updateNo();
+
+  document.getElementById('prev').addEventListener('click', function () { pageFlip.flipPrev(); });
+  document.getElementById('next').addEventListener('click', function () { pageFlip.flipNext(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') pageFlip.flipPrev();
+    if (e.key === 'ArrowRight') pageFlip.flipNext();
+  });
+</script>
+</body>
+</html>

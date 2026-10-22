@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enter Zenithia — Odd Orbit Beauty</title>
+<meta name="description" content="An explorable map of Zenithia, the realm of Odd Orbit Beauty. Tap a gold light to wander.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0614;
+    --deep:#170b2e;
+    --panel:#1d1038;
+    --ink:#e9e2f5;
+    --muted:#a99bc7;
+    --gold:#d9a441;
+    --gold-bright:#f2c66d;
+    --hair:rgba(217,164,65,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--void)}
+  body{
+    color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #2a1650 0%, rgba(42,22,80,0) 60%),
+      radial-gradient(900px 500px at 85% 110%, #22103f 0%, rgba(34,16,63,0) 55%),
+      var(--void);
+    padding:28px 16px 120px;
+  }
+  header{text-align:center;max-width:900px;margin:0 auto 20px}
+  .overline{
+    font-family:Cinzel,serif;letter-spacing:.42em;font-size:11px;color:var(--gold);
+    text-transform:uppercase;margin-bottom:10px;text-indent:.42em;
+  }
+  h1{
+    font-family:Cinzel,serif;font-weight:700;font-size:clamp(38px,7vw,64px);
+    letter-spacing:.18em;text-indent:.18em;color:var(--ink);line-height:1.05;
+    text-shadow:0 0 34px rgba(242,198,109,.25);
+  }
+  .sub{font-size:clamp(17px,2.6vw,21px);font-style:italic;color:var(--muted);margin-top:8px}
+  .rule{display:flex;align-items:center;gap:12px;max-width:420px;margin:16px auto 0;color:var(--gold)}
+  .rule::before,.rule::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--hair),transparent)}
+  .rule span{font-size:13px}
+
+  .stage{
+    position:relative;max-width:1120px;margin:0 auto;border:1px solid var(--hair);
+    border-radius:14px;overflow:hidden;background:var(--deep);
+    box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 6px rgba(217,164,65,.06), 0 0 90px rgba(88,52,160,.25);
+  }
+  .stage img.map{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+  .hotspot{
+    position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
+    width:40px;height:40px;border-radius:50%;border:none;background:transparent;cursor:pointer;
+    display:grid;place-items:center;z-index:3;
+  }
+  .hotspot .dot{
+    width:14px;height:14px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #ffe9b0, var(--gold) 60%, #9a6d1d);
+    box-shadow:0 0 0 2px rgba(11,6,20,.65), 0 0 16px 4px rgba(242,198,109,.55);
+    position:relative;z-index:2;transition:transform .18s ease;
+  }
+  .hotspot::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    border:1px solid rgba(242,198,109,.75);animation:pulse 2.6s ease-out infinite;
+  }
+  .hotspot:hover .dot,.hotspot:focus-visible .dot{transform:scale(1.35)}
+  .hotspot:focus-visible{outline:2px solid var(--gold-bright);outline-offset:2px}
+  .hotspot .tag{
+    position:absolute;bottom:calc(100% + 2px);left:50%;transform:translate(-50%,4px);
+    font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+    color:var(--gold-bright);background:rgba(11,6,20,.82);border:1px solid var(--hair);
+    padding:4px 8px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .18s ease, transform .18s ease;z-index:4;
+  }
+  .hotspot:hover .tag,.hotspot:focus-visible .tag{opacity:1;transform:translate(-50%,0)}
+  .hotspot.mini{width:30px;height:30px}
+  .hotspot.mini .dot{width:9px;height:9px}
+  .hotspot.on .dot{background:radial-gradient(circle at 35% 35%, #fff6da, var(--gold-bright) 55%, #b9832a)}
+  @keyframes pulse{0%{transform:scale(.45);opacity:.9}70%{transform:scale(1.15);opacity:0}100%{transform:scale(1.15);opacity:0}}
+
+  .hint{text-align:center;color:var(--muted);font-style:italic;font-size:16.5px;margin:14px auto 0;max-width:1120px}
+
+  /* District panel */
+  .panel{
+    position:fixed;z-index:40;background:linear-gradient(180deg,var(--panel),#150a29);
+    border:1px solid var(--hair);color:var(--ink);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);
+    transition:transform .38s cubic-bezier(.22,.9,.28,1), opacity .3s ease;
+  }
+  @media (min-width:861px){
+    .panel{top:50%;right:28px;width:380px;max-height:88vh;overflow:auto;border-radius:16px;
+      transform:translate(calc(100% + 60px),-50%);opacity:0;pointer-events:none}
+    .panel.open{transform:translate(0,-50%);opacity:1;pointer-events:auto}
+  }
+  @media (max-width:860px){
+    .panel{left:10px;right:10px;bottom:10px;max-height:72vh;overflow:auto;border-radius:16px;
+      transform:translateY(calc(100% + 30px));opacity:0;pointer-events:none}
+    .panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+  }
+  .panel figure{position:relative}
+  .panel figure img{display:block;width:100%;height:210px;object-fit:cover}
+  .panel figure::after{content:"";position:absolute;inset:auto 0 0 0;height:70px;background:linear-gradient(180deg,transparent,rgba(21,10,41,.92))}
+  .panel .body{padding:6px 22px 24px}
+  .panel h2{font-family:Cinzel,serif;font-size:24px;letter-spacing:.06em;margin:2px 0 8px}
+  .panel .lore{font-size:18.5px;line-height:1.45;color:#d9cfef}
+  .shade{
+    margin-top:16px;border:1px solid var(--hair);border-radius:12px;padding:12px 14px;
+    background:rgba(217,164,65,.07);display:flex;align-items:center;gap:12px;
+  }
+  .shade .swatch{width:30px;height:30px;border-radius:50%;flex:none;border:2px solid rgba(255,255,255,.25);box-shadow:inset 0 0 8px rgba(0,0,0,.45)}
+  .shade .sname{font-family:Cinzel,serif;font-size:15px;letter-spacing:.08em;color:var(--gold-bright)}
+  .shade .snote{font-style:italic;font-size:15.5px;color:var(--muted);line-height:1.25}
+  .cta{
+    display:inline-block;margin-top:16px;font-family:Cinzel,serif;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:#1c0f02;background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    padding:11px 18px;border-radius:999px;text-decoration:none;border:1px solid #8a6414;
+    box-shadow:0 6px 20px rgba(217,164,65,.35);
+  }
+  .cta:hover{filter:brightness(1.07)}
+  .close{
+    position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--hair);background:rgba(11,6,20,.75);color:var(--gold-bright);
+    font-size:17px;cursor:pointer;line-height:1;
+  }
+  .egg{margin-top:14px;font-style:italic;color:var(--muted);font-size:15.5px}
+
+  /* Lunuff companion */
+  .lunuff{position:fixed;right:16px;bottom:86px;z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .bubble{
+    max-width:230px;background:#f6f1ff;color:#2a1650;border:2px solid var(--gold);border-radius:16px;
+    padding:9px 13px;font-size:16.5px;line-height:1.3;font-weight:600;position:relative;
+    box-shadow:0 10px 26px rgba(0,0,0,.45);transition:opacity .25s ease;
+  }
+  .bubble::after{content:"";position:absolute;right:34px;bottom:-9px;width:14px;height:14px;background:#f6f1ff;
+    border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
+  .lunuff button{
+    width:86px;height:86px;border-radius:50%;border:3px solid var(--gold);padding:0;overflow:hidden;cursor:pointer;
+    background:#fff;box-shadow:0 12px 30px rgba(0,0,0,.5), 0 0 24px rgba(242,198,109,.35);
+    animation:bob 3.4s ease-in-out infinite;
+  }
+  .lunuff button img{width:100%;height:100%;object-fit:cover;display:block}
+  .lunuff button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
+  .lunuff.hop button{animation:hop .45s ease}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-16px) scale(1.05)}100%{transform:translateY(0)}}
+  .lunuff .name{font-family:Cinzel,serif;font-size:10px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-right:8px}
+
+  /* Footer bar */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(11,6,20,0),rgba(11,6,20,.92) 30%);
+  }
+  .bar a{
+    font-family:Cinzel,serif;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
+    color:var(--gold-bright);border:1px solid var(--hair);border-radius:999px;padding:10px 18px;background:rgba(23,11,46,.85);
+  }
+  .bar a:hover{background:rgba(217,164,65,.18)}
+  .bar .fine{width:100%;text-align:center;font-style:italic;color:var(--muted);font-size:14.5px;margin-top:2px}
+
+  @media (prefers-reduced-motion: reduce){
+    .hotspot::after,.lunuff button{animation:none}
+    .panel{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="overline">Odd Orbit Beauty presents</div>
+  <h1>ZENITHIA</h1>
+  <p class="sub">the realm, mapped at dusk — every gold light is somewhere real</p>
+  <div class="rule"><span>✦</span></div>
+</header>
+
+<main>
+  <div class="stage" id="stage">
+    <img class="map" src="assets/map.webp" alt="Illustrated isometric map of Zenithia at dusk: a spired tower-library at the center, floating sky-market isles, hanging gardens with waterfalls, rose-stone cave dwellings, and a moonlit lake." draggable="false">
+    <!-- hotspots are injected by script -->
+  </div>
+  <p class="hint">Tap a gold light to wander. Lunuff (bottom right) knows the way — mostly.</p>
+</main>
+
+<aside class="panel" id="panel" aria-hidden="true" aria-label="District details">
+  <button class="close" id="closeBtn" aria-label="Close district panel">✕</button>
+  <figure><img id="pImg" src="" alt=""></figure>
+  <div class="body">
+    <h2 id="pName"></h2>
+    <p class="lore" id="pLore"></p>
+    <div class="shade" id="pShade" hidden>
+      <div class="swatch" id="pSwatch"></div>
+      <div>
+        <div class="sname" id="pShadeName"></div>
+        <div class="snote" id="pShadeNote"></div>
+      </div>
+    </div>
+    <p class="egg" id="pEgg" hidden></p>
+    <a class="cta" id="pCta" href="https://www.etsy.com/shop/OddOrbitBeauty" target="_blank" rel="noopener" hidden>Shop Odd Orbit Beauty</a>
+  </div>
+</aside>
+
+<div class="lunuff" id="lunuff">
+  <div class="bubble" id="bubble">welcome to zenithia ✦ tap a gold light — i'll show you around.</div>
+  <button id="lunuffBtn" aria-label="Ask Lunuff for a tip">
+    <img src="assets/lunuff.png" alt="Lunuff, a periwinkle alien bunny puppy with a gold crescent moon on its forehead">
+  </button>
+  <div class="name">Lunuff</div>
+</div>
+
+<nav class="bar">
+  <a href="https://www.etsy.com/shop/OddOrbitBeauty" target="_blank" rel="noopener">Shop — Etsy</a>
+  <a href="https://www.instagram.com/oddorbitbeauty" target="_blank" rel="noopener">Instagram — @oddorbitbeauty</a>
+  <div class="fine">Odd Orbit Beauty — jewelry by day, gloss by night.</div>
+</nav>
+
+<script>
+var SHOP = "https://www.etsy.com/shop/OddOrbitBeauty";
+var DISTRICTS = [
+  { id:"nadir", name:"Zenith Nadir", x:50, y:36, img:"assets/nadir.jpg",
+    alt:"Zenith Nadir, the great tower-library at the heart of Zenithia",
+    lore:"The tower-library at the center of everything, where every shade in the realm was first poured.",
+    shade:{ name:"Black Siren", note:"warm vanilla, library dark", color:"#241a20" },
+    lunuff:"home base. black siren started right here." },
+  { id:"skymarket", name:"The Sky Market", x:80, y:23, img:"assets/skymarket.jpg",
+    alt:"The Sky Market, stalls on floating isles strung with lanterns at blue hour",
+    lore:"Stalls on floating isles, strung with lanterns, open only at blue hour — if you can find the bridge.",
+    shade:{ name:"Nebula", note:"deep purple, bottled dusk", color:"#5b2a86" },
+    lunuff:"nebula drifts down from up here. mind the lanterns." },
+  { id:"gardens", name:"The Hanging Gardens", x:11, y:36, img:"assets/gardens.jpg",
+    alt:"The Hanging Gardens, green terraces and waterfalls spilling over the cliffs",
+    lore:"Terraces of green spilling over the cliffs, waterfalls threading through. The realm comes here to breathe.",
+    lunuff:"the gardens hum. actually hum. stand still and listen." },
+  { id:"hollowlands", name:"The Hollowlands", x:91, y:52, img:"assets/hollowlands.jpg",
+    alt:"The Hollowlands, homes carved into warm rose stone",
+    lore:"Homes carved into rose stone, a warm light in every arch, and stairs that remember everyone's name.",
+    shade:{ name:"Blood Moon", note:"raspberry red, warm as the cliff walls", color:"#b81e4a" },
+    lunuff:"blood moon country. the stone stays warm after sunset." },
+  { id:"lake", name:"The Moonlit Lake", x:84, y:88, img:"assets/lake.webp",
+    alt:"The Moonlit Lake, still water holding the moon's reflection",
+    lore:"The lake keeps the moon's reflection like a secret it isn't planning to tell.",
+    shade:{ name:"Aquariosa", note:"iridescent blue, for whoever the water calls", color:"#4a7fb5" },
+    lunuff:"aquariosa lives in that glow. i just visit. often." },
+  { id:"central", name:"Central District", x:42, y:68, img:"assets/central.jpg",
+    alt:"The Central District at golden hour, trams looping past fountains",
+    lore:"Golden hour lives here permanently. The trams loop, the fountains gossip, and everyone is on their way somewhere beautiful.",
+    lunuff:"rush hour in the central district is just... golden." },
+  { id:"quarter", name:"Meridian Quarter", x:32, y:40, img:"assets/quarter.jpg",
+    alt:"Meridian Quarter, elegant stone facades on a quiet old street",
+    lore:"The old quarter — stone facades and slow mornings, windows that have watched a century of orbits.",
+    lunuff:"old meridian. every window has a story, and most of them are true." },
+  { id:"row", name:"Meridian Row", x:63, y:76, img:"assets/row.jpg",
+    alt:"Meridian Row, the realm's shopping street with velvet awnings and gold lettering",
+    lore:"The realm's shopping row: velvet awnings, gold lettering, and the one street where window-shopping counts as a skill.",
+    cta:{ label:"Visit the real shop", href:SHOP },
+    lunuff:"this is where the realm shops. there's a real one, you know." },
+  { id:"hollow", name:"The Hollow", x:21, y:65, img:"assets/hollow.jpg",
+    alt:"The Hollow, a market garden tucked beside the waterfalls",
+    lore:"A market hollow tucked by the falls — flowers, fruit, and whatever the gardeners dreamed up this week.",
+    lunuff:"market day is every day in the hollow. bring a basket." },
+  { id:"bakery", name:"Whisk & Glow", x:57, y:88, img:"assets/bakery.jpg", mini:true,
+    alt:"Whisk and Glow, a small bakery with a warm window",
+    lore:"A bakery, hiding in plain sight at the fountain's edge.",
+    egg:"It smells like vanilla at closing time, and nobody in the realm will explain why.",
+    lunuff:"you found it!! best seat is by the window. don't tell anyone." }
+];
+var TIPS = [
+  "tap a gold light to wander ✦",
+  "i know every street here. mostly.",
+  "the sky market only opens at blue hour. worth it.",
+  "psst — there's a bakery somewhere on this map.",
+  "every shade here is real. you can wear all four.",
+  "the lake does that reflection thing every night. show-off."
+];
+
+var stage = document.getElementById("stage");
+var panel = document.getElementById("panel");
+var bubble = document.getElementById("bubble");
+var lunuffBox = document.getElementById("lunuff");
+var tipIndex = 0, bubbleTimer = null;
+
+function say(text){
+  bubble.style.opacity = 0;
+  setTimeout(function(){ bubble.textContent = text; bubble.style.opacity = 1; }, 180);
+}
+function hop(){
+  lunuffBox.classList.remove("hop");
+  void lunuffBox.offsetWidth;
+  lunuffBox.classList.add("hop");
+}
+
+DISTRICTS.forEach(function(d){
+  var b = document.createElement("button");
+  b.className = "hotspot" + (d.mini ? " mini" : "");
+  b.style.setProperty("--x", d.x + "%");
+  b.style.setProperty("--y", d.y + "%");
+  b.setAttribute("aria-label", "Visit " + d.name);
+  b.innerHTML = '<span class="dot"></span><span class="tag">' + d.name + '</span>';
+  b.addEventListener("click", function(ev){ ev.stopPropagation(); openDistrict(d, b); });
+  stage.appendChild(b);
+  d.el = b;
+});
+
+function openDistrict(d, btn){
+  DISTRICTS.forEach(function(x){ x.el.classList.remove("on"); });
+  btn.classList.add("on");
+  document.getElementById("pImg").src = d.img;
+  document.getElementById("pImg").alt = d.alt;
+  document.getElementById("pName").textContent = d.name;
+  document.getElementById("pLore").textContent = d.lore;
+  var shadeBox = document.getElementById("pShade");
+  if (d.shade){
+    shadeBox.hidden = false;
+    document.getElementById("pSwatch").style.background =
+      "radial-gradient(circle at 32% 30%, rgba(255,255,255,.55), transparent 45%), " + d.shade.color;
+    document.getElementById("pShadeName").textContent = d.shade.name;
+    document.getElementById("pShadeNote").textContent = d.shade.note;
+  } else { shadeBox.hidden = true; }
+  var egg = document.getElementById("pEgg");
+  if (d.egg){ egg.hidden = false; egg.textContent = d.egg; } else { egg.hidden = true; }
+  var cta = document.getElementById("pCta");
+  if (d.shade){
+    cta.hidden = false; cta.textContent = "Shop this shade"; cta.href = SHOP;
+  } else if (d.cta){
+    cta.hidden = false; cta.textContent = d.cta.label; cta.href = d.cta.href;
+  } else { cta.hidden = true; }
+  panel.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  say(d.lunuff); hop();
+}
+
+function closePanel(){
+  panel.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  DISTRICTS.forEach(function(x){ x.el.classList.remove("on"); });
+}
+document.getElementById("closeBtn").addEventListener("click", closePanel);
+document.addEventListener("keydown", function(e){ if (e.key === "Escape") closePanel(); });
+stage.addEventListener("click", function(e){ if (e.target === stage || e.target.classList.contains("map")) closePanel(); });
+
+document.getElementById("lunuffBtn").addEventListener("click", function(){
+  say(TIPS[tipIndex % TIPS.length]); tipIndex++; hop();
+});
+</script>
+</body>
+</html>
