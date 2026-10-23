@@ -85,6 +85,9 @@
   }
   .panel figure{background:#000;display:grid;place-items:center}
   .panel figure img{display:block;max-width:100%;max-height:46vh;object-fit:contain}
+  .panel figure.world{margin-top:2px;display:block;background:#000}
+  .panel figure.world img{width:100%;max-height:none;object-fit:cover}
+  .panel figure.world figcaption{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);padding:9px 22px 11px;background:linear-gradient(180deg,#150a29,var(--panel))}
   .panel .body{padding:16px 22px 24px}
   .panel .no{font-family:Cinzel,serif;font-size:10.5px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
   .panel h2{font-family:Cinzel,serif;font-size:26px;letter-spacing:.05em;margin:4px 0 2px}
@@ -154,6 +157,7 @@
 <aside class="panel" id="panel" aria-hidden="true" aria-label="Exhibit details">
   <button class="close" id="closeBtn" aria-label="Close exhibit panel">✕</button>
   <figure><img id="pImg" src="" alt=""></figure>
+  <figure class="world"><img id="pWorld" src="" alt=""><figcaption id="pWorldCap"></figcaption></figure>
   <div class="body">
     <div class="no" id="pNo"></div>
     <h2 id="pName"></h2>
@@ -183,6 +187,9 @@ var EXHIBITS = [
   { id:"black-siren", no:"Exhibit Nº I", name:"Black Siren", house:"House of Zenith Nadir",
     img:"assets/black-siren.jpg",
     alt:"Black Siren Renaissance Lipgloss Necklace: near-black gloss in a silver-tone filigree cage pendant with a winged centerpiece",
+    world:"assets/black-siren-world.jpg",
+    worldAlt:"Black Siren reclined against a great old book titled History of Zenithia on a black marble altar, in the candlelit library of Zenith Nadir",
+    worldCap:"In situ — Zenith Nadir, on the History of Zenithia",
     line:"The first shade poured in the library dark.",
     story:"Near-black and warm at once — the piece the whole realm started with. It hangs in the tower's own case, under library light.",
     medium:"<b>Medium:</b> near-black gloss, warm vanilla, in an acrylic vial. Silver-tone filigree cage, crown cap, stainless steel chain. Handmade, vegan.",
@@ -190,6 +197,9 @@ var EXHIBITS = [
   { id:"aquariosa", no:"Exhibit Nº II", name:"Aquariosa", house:"House of the Moonlit Lake",
     img:"assets/aquariosa.jpg",
     alt:"Aquariosa Renaissance Lipgloss Necklace: iridescent blue gloss in a silver-tone filigree cage pendant",
+    world:"assets/aquariosa-world.jpg",
+    worldAlt:"Aquariosa lying on her side on wet black stone at the edge of the Moonlit Lake under a full moon, chain pooled beside her, blue light rippling in the water",
+    worldCap:"In situ — the Moonlit Lake, at rest",
     line:"For whoever the water calls.",
     story:"Blue the way deep water is blue — it changes with the light and never apologizes. Exhibited, naturally, facing the lake.",
     medium:"<b>Medium:</b> iridescent blue gloss, tropical vanilla, in an acrylic vial. Silver-tone filigree cage, crown cap, stainless steel chain. Handmade, vegan.",
@@ -197,6 +207,9 @@ var EXHIBITS = [
   { id:"nebula", no:"Exhibit Nº III", name:"Nebula", house:"House of the Sky Market", tag:"This season: Nebula's Gaze",
     img:"assets/nebula.jpg",
     alt:"Nebula Renaissance Lipgloss Necklace: deep purple gloss in a gold-tone filigree cage pendant",
+    world:"assets/nebula-world.jpg",
+    worldAlt:"Nebula leaning against a translucent opal orb on violet silk at a lantern-lit night market stall, sparks rising",
+    worldCap:"In situ — the Sky Market, on her opal",
     line:"Bottled dusk, straight from blue hour.",
     story:"Deep purple with a whole weather system in it. For the Halloween season the gallery exhibits her under her seasonal name — Nebula's Gaze.",
     medium:"<b>Medium:</b> deep purple gloss in an acrylic vial. Gold-tone filigree cage, crown cap, and chain. Handmade, vegan.",
@@ -204,6 +217,9 @@ var EXHIBITS = [
   { id:"blood-moon", no:"Exhibit Nº IV", name:"Blood Moon", house:"House of the Hollowlands", tag:"Newest acquisition",
     img:"assets/blood-moon.jpg",
     alt:"Blood Moon Renaissance Lipgloss Necklace held in hand: raspberry pink-red gloss in a gold-tone filigree cage pendant",
+    world:"assets/blood-moon-world.jpg",
+    worldAlt:"Blood Moon held in a manicured hand before candles and an amethyst cluster in the Hollowlands canyon, a deep red moon low in the sky",
+    worldCap:"In situ — the Hollowlands shrine, in hand",
     line:"The newest piece in the collection.",
     story:"Raspberry red, warm as the Hollowlands stone after sunset. The gallery's newest acquisition — she hasn't stopped glowing about it.",
     medium:"<b>Medium:</b> raspberry pink-red gloss in an acrylic vial. Gold-tone filigree cage, crown cap, and chain. Handmade, vegan.",
@@ -256,6 +272,9 @@ EXHIBITS.forEach(function(x){
 function openExhibit(x){
   document.getElementById("pImg").src = x.img;
   document.getElementById("pImg").alt = x.alt;
+  document.getElementById("pWorld").src = x.world;
+  document.getElementById("pWorld").alt = x.worldAlt;
+  document.getElementById("pWorldCap").textContent = x.worldCap;
   document.getElementById("pNo").textContent = x.no + (x.tag ? " — " + x.tag : "");
   document.getElementById("pName").textContent = x.name;
   document.getElementById("pHouse").textContent = x.house;
