@@ -211,13 +211,19 @@
 </div>
 
 <nav class="bar">
+  <a href="https://oddorbitbeauty.myshopify.com" target="_blank" rel="noopener">Shop — Shopify</a>
   <a href="https://www.etsy.com/shop/OddOrbitBeauty" target="_blank" rel="noopener">Shop — Etsy</a>
   <a href="https://www.instagram.com/oddorbitbeauty" target="_blank" rel="noopener">Instagram — @oddorbitbeauty</a>
   <div class="fine">Odd Orbit Beauty — jewelry by day, gloss by night.</div>
 </nav>
 
 <script>
-var SHOP = "https://www.etsy.com/shop/OddOrbitBeauty";
+var SHOP = "https://oddorbitbeauty.myshopify.com";
+var ETSY = "https://www.etsy.com/shop/OddOrbitBeauty";
+var SHOPIFY_PRODUCTS = {
+  "Black Siren": "https://oddorbitbeauty.myshopify.com/products/black-siren-renaissance-lipgloss-necklace",
+  "Aquariosa": "https://oddorbitbeauty.myshopify.com/products/aquariosa-renaissance-lipgloss-necklace"
+};
 var DISTRICTS = [
   { id:"nadir", name:"Zenith Nadir", x:50, y:46, img:"assets/nadir.jpg",
     alt:"Zenith Nadir, the gold-domed heart of Zenithia, above its fountain plaza",
@@ -350,7 +356,10 @@ function openDistrict(d, btn){
   if (d.egg){ egg.hidden = false; egg.textContent = d.egg; } else { egg.hidden = true; }
   var cta = document.getElementById("pCta");
   if (d.shade){
-    cta.hidden = false; cta.textContent = "Shop this shade"; cta.href = SHOP;
+    var productUrl = SHOPIFY_PRODUCTS[d.shade.name];
+    cta.hidden = false;
+    cta.textContent = productUrl ? "Shop on Shopify" : "Find on Etsy";
+    cta.href = productUrl || ETSY;
   } else if (d.cta){
     cta.hidden = false; cta.textContent = d.cta.label; cta.href = d.cta.href;
   } else { cta.hidden = true; }
